@@ -1,0 +1,9 @@
+---
+- domain: example.com
+  endpoints: example.yml
+  secure: true
+  session: true
+  variables:
+    username: ExampleUsernameHere
+    password: ExamplePasswordHere
+    example_variable: 9999

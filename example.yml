@@ -1,0 +1,59 @@
+---
+# Example API endpoints
+# Must have authentication ones first, otherwise rest of requests will fail
+
+
+##
+# Log in
+##
+- description: Capture CSRF Tokens
+  url: /auth/login
+  method: get  
+  # Designed for capturing the values of form fields (specifically) for the purpose of later substitution; designed
+  # for use with CSRF
+  capture: 
+    - name: TokenFields
+      mode: html
+      path: //input[@name='csrf[fields]']/@value
+    - name: TokenKey
+      mode: html
+      path: //input[@name='csrf[key]']/@value
+- description: Log us in
+  url: /auth/login
+  method: post
+  data:
+    mode: form
+    body: >
+      {
+        "_method": "POST",
+        "user[username]": "%username%",
+        "user[password]": "%password%",
+        "user[remember_me]": "0",
+        "csrf[fields]": "%TokenFields%",
+        "csrf[key]": "%TokenKey%",
+      }
+  options:
+    allow_redirects: true
+  expected:
+    code: 200
+    contains: Dashboard
+    url: .*?/(user/dashboard)?(?:\?([a-z0-9]+\=.+?&?)*)?$
+    stop_on_fail: true
+- description: Switch to an active project
+  url: /projects/select/%example_variable%
+  method: get
+  options:
+    allow_redirects: true
+  expected:
+    code: 200
+    contains: Dashboard
+
+##
+# General API
+##
+- description: Hit Invalid endpoint
+  url: /app/someInvalidEndpoint
+  method: get
+  expected: 
+    code: 404
+    contains: "[Nn]ot (be )?[Ff]ound"
