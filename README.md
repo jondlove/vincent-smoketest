@@ -2,6 +2,7 @@
 ## Overview
 The Vincent Smoke Testing system is an automated, testing system designed to hit a series of web endpoints and test that they return expected values
 
+Open-sourced with permission
 
 ## Domain File
 
